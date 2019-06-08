@@ -1,0 +1,2691 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Telecom\_Churn\_Model}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Index}\label{index}
+
+\begin{itemize}
+\tightlist
+\item
+  1. Data Import and Cleanup
+
+  \begin{itemize}
+  \tightlist
+  \item
+    1.1. Data overview
+  \end{itemize}
+\item
+  2. Data Manipulation
+\item
+  3. Data Preparation and Exploratory Data Analysis
+
+  \begin{itemize}
+  \tightlist
+  \item
+    3.1. Correlation Matrix
+  \item
+    3.2. Variables Distribution
+  \item
+    3.3. Principal Component Analysis
+  \end{itemize}
+\item
+  4. Model Creation and Testing
+
+  \begin{itemize}
+  \tightlist
+  \item
+    4.1. Baseline Model
+  \item
+    4.2. Support Vector Machine
+  \item
+    4.3. Decision Tree
+  \item
+    4.4. XGBoost
+  \item
+    4.5. LightGBM
+  \end{itemize}
+\item
+  5. Model Evaluation and Performance Metrics
+
+  \begin{itemize}
+  \tightlist
+  \item
+    5.1. Confusion matrices for models
+  \item
+    5.2. Compare model metrics
+  \end{itemize}
+\end{itemize}
+
+    \section{\texorpdfstring{ 1.Data Import and Cleanup ( index
+)}{ 1.Data Import and Cleanup    ( index )}}\label{data-import-and-cleanup-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+
+\PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
+\PY{k+kn}{from} \PY{n+nn}{IPython.display} \PY{k+kn}{import} \PY{n}{display} \PY{c+c1}{\PYZsh{} Allows the use of display() for DataFrames}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{\texorpdfstring{ 1.1 Data Overview ( index
+)}{ 1.1 Data Overview    ( index )}}\label{data-overview-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}path to data source file}
+\PY{n}{source\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/home/gino/Documents/Udacity/MLEnano/machine\PYZhy{}learning\PYZhy{}master/projects/capstone/Final/WA\PYZus{}Fn\PYZhy{}UseC\PYZus{}\PYZhy{}Telco\PYZhy{}Customer\PYZhy{}Churn.csv}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{n}{raw\PYZus{}data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{source\PYZus{}path}\PY{p}{)}
+
+\PY{k}{print} \PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{shape}
+\PY{n}{raw\PYZus{}data}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(7043, 21)
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{36}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+      customerID  gender  SeniorCitizen Partner Dependents  tenure  \textbackslash{}
+0     7590-VHVEG  Female              0     Yes         No       1
+1     5575-GNVDE    Male              0      No         No      34
+2     3668-QPYBK    Male              0      No         No       2
+3     7795-CFOCW    Male              0      No         No      45
+4     9237-HQITU  Female              0      No         No       2
+5     9305-CDSKC  Female              0      No         No       8
+6     1452-KIOVK    Male              0      No        Yes      22
+7     6713-OKOMC  Female              0      No         No      10
+8     7892-POOKP  Female              0     Yes         No      28
+9     6388-TABGU    Male              0      No        Yes      62
+10    9763-GRSKD    Male              0     Yes        Yes      13
+11    7469-LKBCI    Male              0      No         No      16
+12    8091-TTVAX    Male              0     Yes         No      58
+13    0280-XJGEX    Male              0      No         No      49
+14    5129-JLPIS    Male              0      No         No      25
+15    3655-SNQYZ  Female              0     Yes        Yes      69
+16    8191-XWSZG  Female              0      No         No      52
+17    9959-WOFKT    Male              0      No        Yes      71
+18    4190-MFLUW  Female              0     Yes        Yes      10
+19    4183-MYFRB  Female              0      No         No      21
+20    8779-QRDMV    Male              1      No         No       1
+21    1680-VDCWW    Male              0     Yes         No      12
+22    1066-JKSGK    Male              0      No         No       1
+23    3638-WEABW  Female              0     Yes         No      58
+24    6322-HRPFA    Male              0     Yes        Yes      49
+25    6865-JZNKO  Female              0      No         No      30
+26    6467-CHFZW    Male              0     Yes        Yes      47
+27    8665-UTDHZ    Male              0     Yes        Yes       1
+28    5248-YGIJN    Male              0     Yes         No      72
+29    8773-HHUOZ  Female              0      No        Yes      17
+{\ldots}          {\ldots}     {\ldots}            {\ldots}     {\ldots}        {\ldots}     {\ldots}
+7013  1685-BQULA  Female              0      No         No      40
+7014  9053-EJUNL    Male              0      No         No      41
+7015  0666-UXTJO    Male              1     Yes         No      34
+7016  1471-GIQKQ  Female              0      No         No       1
+7017  4807-IZYOZ  Female              0      No         No      51
+7018  1122-JWTJW    Male              0     Yes        Yes       1
+7019  9710-NJERN  Female              0      No         No      39
+7020  9837-FWLCH    Male              0     Yes        Yes      12
+7021  1699-HPSBG    Male              0      No         No      12
+7022  7203-OYKCT    Male              0      No         No      72
+7023  1035-IPQPU  Female              1     Yes         No      63
+7024  7398-LXGYX    Male              0     Yes         No      44
+7025  2823-LKABH  Female              0      No         No      18
+7026  8775-CEBBJ  Female              0      No         No       9
+7027  0550-DCXLH    Male              0      No         No      13
+7028  9281-CEDRU  Female              0     Yes         No      68
+7029  2235-DWLJU  Female              1      No         No       6
+7030  0871-OPBXW  Female              0      No         No       2
+7031  3605-JISKB    Male              1     Yes         No      55
+7032  6894-LFHLY    Male              1      No         No       1
+7033  9767-FFLEM    Male              0      No         No      38
+7034  0639-TSIQW  Female              0      No         No      67
+7035  8456-QDAVC    Male              0      No         No      19
+7036  7750-EYXWZ  Female              0      No         No      12
+7037  2569-WGERO  Female              0      No         No      72
+7038  6840-RESVB    Male              0     Yes        Yes      24
+7039  2234-XADUH  Female              0     Yes        Yes      72
+7040  4801-JZAZL  Female              0     Yes        Yes      11
+7041  8361-LTMKD    Male              1     Yes         No       4
+7042  3186-AJIEK    Male              0      No         No      66
+
+     PhoneService     MultipleLines InternetService       OnlineSecurity  \textbackslash{}
+0              No  No phone service             DSL                   No
+1             Yes                No             DSL                  Yes
+2             Yes                No             DSL                  Yes
+3              No  No phone service             DSL                  Yes
+4             Yes                No     Fiber optic                   No
+5             Yes               Yes     Fiber optic                   No
+6             Yes               Yes     Fiber optic                   No
+7              No  No phone service             DSL                  Yes
+8             Yes               Yes     Fiber optic                   No
+9             Yes                No             DSL                  Yes
+10            Yes                No             DSL                  Yes
+11            Yes                No              No  No internet service
+12            Yes               Yes     Fiber optic                   No
+13            Yes               Yes     Fiber optic                   No
+14            Yes                No     Fiber optic                  Yes
+15            Yes               Yes     Fiber optic                  Yes
+16            Yes                No              No  No internet service
+17            Yes               Yes     Fiber optic                  Yes
+18            Yes                No             DSL                   No
+19            Yes                No     Fiber optic                   No
+20             No  No phone service             DSL                   No
+21            Yes                No              No  No internet service
+22            Yes                No              No  No internet service
+23            Yes               Yes             DSL                   No
+24            Yes                No             DSL                  Yes
+25            Yes                No             DSL                  Yes
+26            Yes               Yes     Fiber optic                   No
+27             No  No phone service             DSL                   No
+28            Yes               Yes             DSL                  Yes
+29            Yes                No             DSL                   No
+{\ldots}           {\ldots}               {\ldots}             {\ldots}                  {\ldots}
+7013          Yes               Yes     Fiber optic                   No
+7014          Yes               Yes     Fiber optic                   No
+7015          Yes                No     Fiber optic                   No
+7016          Yes                No             DSL                   No
+7017          Yes                No              No  No internet service
+7018          Yes                No     Fiber optic                   No
+7019          Yes                No              No  No internet service
+7020          Yes                No              No  No internet service
+7021          Yes                No             DSL                   No
+7022          Yes               Yes     Fiber optic                   No
+7023          Yes               Yes     Fiber optic                   No
+7024          Yes               Yes     Fiber optic                  Yes
+7025          Yes               Yes     Fiber optic                   No
+7026          Yes                No             DSL                   No
+7027          Yes                No             DSL                   No
+7028          Yes                No             DSL                   No
+7029           No  No phone service             DSL                   No
+7030          Yes                No              No  No internet service
+7031          Yes               Yes             DSL                  Yes
+7032          Yes               Yes     Fiber optic                   No
+7033          Yes                No     Fiber optic                   No
+7034          Yes               Yes     Fiber optic                  Yes
+7035          Yes                No     Fiber optic                   No
+7036           No  No phone service             DSL                   No
+7037          Yes                No              No  No internet service
+7038          Yes               Yes             DSL                  Yes
+7039          Yes               Yes     Fiber optic                   No
+7040           No  No phone service             DSL                  Yes
+7041          Yes               Yes     Fiber optic                   No
+7042          Yes                No     Fiber optic                  Yes
+
+      {\ldots}      DeviceProtection          TechSupport          StreamingTV  \textbackslash{}
+0     {\ldots}                    No                   No                   No
+1     {\ldots}                   Yes                   No                   No
+2     {\ldots}                    No                   No                   No
+3     {\ldots}                   Yes                  Yes                   No
+4     {\ldots}                    No                   No                   No
+5     {\ldots}                   Yes                   No                  Yes
+6     {\ldots}                    No                   No                  Yes
+7     {\ldots}                    No                   No                   No
+8     {\ldots}                   Yes                  Yes                  Yes
+9     {\ldots}                    No                   No                   No
+10    {\ldots}                    No                   No                   No
+11    {\ldots}   No internet service  No internet service  No internet service
+12    {\ldots}                   Yes                   No                  Yes
+13    {\ldots}                   Yes                   No                  Yes
+14    {\ldots}                   Yes                  Yes                  Yes
+15    {\ldots}                   Yes                  Yes                  Yes
+16    {\ldots}   No internet service  No internet service  No internet service
+17    {\ldots}                   Yes                   No                  Yes
+18    {\ldots}                   Yes                  Yes                   No
+19    {\ldots}                   Yes                   No                   No
+20    {\ldots}                   Yes                   No                   No
+21    {\ldots}   No internet service  No internet service  No internet service
+22    {\ldots}   No internet service  No internet service  No internet service
+23    {\ldots}                    No                  Yes                   No
+24    {\ldots}                    No                  Yes                   No
+25    {\ldots}                    No                   No                   No
+26    {\ldots}                    No                   No                  Yes
+27    {\ldots}                    No                   No                   No
+28    {\ldots}                   Yes                  Yes                  Yes
+29    {\ldots}                    No                   No                  Yes
+{\ldots}   {\ldots}                   {\ldots}                  {\ldots}                  {\ldots}
+7013  {\ldots}                   Yes                   No                  Yes
+7014  {\ldots}                    No                   No                  Yes
+7015  {\ldots}                   Yes                   No                  Yes
+7016  {\ldots}                    No                   No                   No
+7017  {\ldots}   No internet service  No internet service  No internet service
+7018  {\ldots}                    No                   No                   No
+7019  {\ldots}   No internet service  No internet service  No internet service
+7020  {\ldots}   No internet service  No internet service  No internet service
+7021  {\ldots}                    No                  Yes                  Yes
+7022  {\ldots}                   Yes                   No                  Yes
+7023  {\ldots}                   Yes                   No                  Yes
+7024  {\ldots}                   Yes                   No                   No
+7025  {\ldots}                   Yes                  Yes                   No
+7026  {\ldots}                    No                   No                   No
+7027  {\ldots}                    No                  Yes                  Yes
+7028  {\ldots}                    No                  Yes                  Yes
+7029  {\ldots}                    No                   No                  Yes
+7030  {\ldots}   No internet service  No internet service  No internet service
+7031  {\ldots}                    No                   No                   No
+7032  {\ldots}                    No                   No                   No
+7033  {\ldots}                    No                   No                   No
+7034  {\ldots}                   Yes                   No                  Yes
+7035  {\ldots}                    No                   No                  Yes
+7036  {\ldots}                   Yes                  Yes                  Yes
+7037  {\ldots}   No internet service  No internet service  No internet service
+7038  {\ldots}                   Yes                  Yes                  Yes
+7039  {\ldots}                   Yes                   No                  Yes
+7040  {\ldots}                    No                   No                   No
+7041  {\ldots}                    No                   No                   No
+7042  {\ldots}                   Yes                  Yes                  Yes
+
+          StreamingMovies        Contract PaperlessBilling  \textbackslash{}
+0                      No  Month-to-month              Yes
+1                      No        One year               No
+2                      No  Month-to-month              Yes
+3                      No        One year               No
+4                      No  Month-to-month              Yes
+5                     Yes  Month-to-month              Yes
+6                      No  Month-to-month              Yes
+7                      No  Month-to-month               No
+8                     Yes  Month-to-month              Yes
+9                      No        One year               No
+10                     No  Month-to-month              Yes
+11    No internet service        Two year               No
+12                    Yes        One year               No
+13                    Yes  Month-to-month              Yes
+14                    Yes  Month-to-month              Yes
+15                    Yes        Two year               No
+16    No internet service        One year               No
+17                    Yes        Two year               No
+18                     No  Month-to-month               No
+19                    Yes  Month-to-month              Yes
+20                    Yes  Month-to-month              Yes
+21    No internet service        One year               No
+22    No internet service  Month-to-month               No
+23                     No        Two year              Yes
+24                     No  Month-to-month               No
+25                     No  Month-to-month              Yes
+26                    Yes  Month-to-month              Yes
+27                     No  Month-to-month               No
+28                    Yes        Two year              Yes
+29                    Yes  Month-to-month              Yes
+{\ldots}                   {\ldots}             {\ldots}              {\ldots}
+7013                   No  Month-to-month              Yes
+7014                   No  Month-to-month              Yes
+7015                   No  Month-to-month              Yes
+7016                   No  Month-to-month               No
+7017  No internet service        Two year               No
+7018                   No  Month-to-month              Yes
+7019  No internet service        Two year               No
+7020  No internet service  Month-to-month              Yes
+7021                   No        One year              Yes
+7022                  Yes        One year              Yes
+7023                  Yes  Month-to-month              Yes
+7024                   No  Month-to-month              Yes
+7025                  Yes  Month-to-month              Yes
+7026                   No  Month-to-month              Yes
+7027                  Yes  Month-to-month               No
+7028                   No        Two year               No
+7029                  Yes  Month-to-month              Yes
+7030  No internet service  Month-to-month              Yes
+7031                   No        One year               No
+7032                   No  Month-to-month              Yes
+7033                   No  Month-to-month              Yes
+7034                   No  Month-to-month              Yes
+7035                   No  Month-to-month              Yes
+7036                  Yes        One year               No
+7037  No internet service        Two year              Yes
+7038                  Yes        One year              Yes
+7039                  Yes        One year              Yes
+7040                   No  Month-to-month              Yes
+7041                   No  Month-to-month              Yes
+7042                  Yes        Two year              Yes
+
+                  PaymentMethod MonthlyCharges  TotalCharges Churn
+0              Electronic check          29.85         29.85    No
+1                  Mailed check          56.95        1889.5    No
+2                  Mailed check          53.85        108.15   Yes
+3     Bank transfer (automatic)          42.30       1840.75    No
+4              Electronic check          70.70        151.65   Yes
+5              Electronic check          99.65         820.5   Yes
+6       Credit card (automatic)          89.10        1949.4    No
+7                  Mailed check          29.75         301.9    No
+8              Electronic check         104.80       3046.05   Yes
+9     Bank transfer (automatic)          56.15       3487.95    No
+10                 Mailed check          49.95        587.45    No
+11      Credit card (automatic)          18.95         326.8    No
+12      Credit card (automatic)         100.35        5681.1    No
+13    Bank transfer (automatic)         103.70        5036.3   Yes
+14             Electronic check         105.50       2686.05    No
+15      Credit card (automatic)         113.25       7895.15    No
+16                 Mailed check          20.65       1022.95    No
+17    Bank transfer (automatic)         106.70       7382.25    No
+18      Credit card (automatic)          55.20        528.35   Yes
+19             Electronic check          90.05        1862.9    No
+20             Electronic check          39.65         39.65   Yes
+21    Bank transfer (automatic)          19.80        202.25    No
+22                 Mailed check          20.15         20.15   Yes
+23      Credit card (automatic)          59.90        3505.1    No
+24      Credit card (automatic)          59.60        2970.3    No
+25    Bank transfer (automatic)          55.30        1530.6    No
+26             Electronic check          99.35       4749.15   Yes
+27             Electronic check          30.20          30.2   Yes
+28      Credit card (automatic)          90.25       6369.45    No
+29                 Mailed check          64.70        1093.1   Yes
+{\ldots}                         {\ldots}            {\ldots}           {\ldots}   {\ldots}
+7013  Bank transfer (automatic)          93.40        3756.4    No
+7014           Electronic check          89.20       3645.75    No
+7015    Credit card (automatic)          85.20       2874.45    No
+7016           Electronic check          49.95         49.95    No
+7017  Bank transfer (automatic)          20.65       1020.75    No
+7018               Mailed check          70.65         70.65   Yes
+7019               Mailed check          20.15           826    No
+7020           Electronic check          19.20           239    No
+7021           Electronic check          59.80         727.8   Yes
+7022           Electronic check         104.95        7544.3    No
+7023           Electronic check         103.50        6479.4    No
+7024    Credit card (automatic)          84.80       3626.35    No
+7025  Bank transfer (automatic)          95.05        1679.4    No
+7026  Bank transfer (automatic)          44.20        403.35   Yes
+7027               Mailed check          73.35        931.55    No
+7028  Bank transfer (automatic)          64.10       4326.25    No
+7029           Electronic check          44.40        263.05    No
+7030               Mailed check          20.05         39.25    No
+7031    Credit card (automatic)          60.00        3316.1    No
+7032           Electronic check          75.75         75.75   Yes
+7033    Credit card (automatic)          69.50       2625.25    No
+7034    Credit card (automatic)         102.95       6886.25   Yes
+7035  Bank transfer (automatic)          78.70        1495.1    No
+7036           Electronic check          60.65         743.3    No
+7037  Bank transfer (automatic)          21.15        1419.4    No
+7038               Mailed check          84.80        1990.5    No
+7039    Credit card (automatic)         103.20        7362.9    No
+7040           Electronic check          29.60        346.45    No
+7041               Mailed check          74.40         306.6   Yes
+7042  Bank transfer (automatic)         105.65        6844.5    No
+
+[7043 rows x 21 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+       SeniorCitizen       tenure  MonthlyCharges
+count    7043.000000  7043.000000     7043.000000
+mean        0.162147    32.371149       64.761692
+std         0.368612    24.559481       30.090047
+min         0.000000     0.000000       18.250000
+25\%         0.000000     9.000000       35.500000
+50\%         0.000000    29.000000       70.350000
+75\%         0.000000    55.000000       89.850000
+max         1.000000    72.000000      118.750000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \section{\texorpdfstring{ 2.Data Manipulation ( index
+)}{ 2.Data Manipulation    ( index )}}\label{data-manipulation-index}
+
+    \subsubsection{Blanks and NA's in the
+data}\label{blanks-and-nas-in-the-data}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Look for NA\PYZsq{}s, missing datapoints.  }
+\PY{n}{display}\PY{p}{(}\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}count of all non\PYZhy{}NA values}
+\PY{n}{display}\PY{p}{(}\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{verbatim}
+customerID          False
+gender              False
+SeniorCitizen       False
+Partner             False
+Dependents          False
+tenure              False
+PhoneService        False
+MultipleLines       False
+InternetService     False
+OnlineSecurity      False
+OnlineBackup        False
+DeviceProtection    False
+TechSupport         False
+StreamingTV         False
+StreamingMovies     False
+Contract            False
+PaperlessBilling    False
+PaymentMethod       False
+MonthlyCharges      False
+TotalCharges        False
+Churn               False
+dtype: bool
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+customerID          7043
+gender              7043
+SeniorCitizen       7043
+Partner             7043
+Dependents          7043
+tenure              7043
+PhoneService        7043
+MultipleLines       7043
+InternetService     7043
+OnlineSecurity      7043
+OnlineBackup        7043
+DeviceProtection    7043
+TechSupport         7043
+StreamingTV         7043
+StreamingMovies     7043
+Contract            7043
+PaperlessBilling    7043
+PaymentMethod       7043
+MonthlyCharges      7043
+TotalCharges        7043
+Churn               7043
+dtype: int64
+    \end{verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{columns}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Index([u'customerID', u'gender', u'SeniorCitizen', u'Partner', u'Dependents',
+       u'tenure', u'PhoneService', u'MultipleLines', u'InternetService',
+       u'OnlineSecurity', u'OnlineBackup', u'DeviceProtection', u'TechSupport',
+       u'StreamingTV', u'StreamingMovies', u'Contract', u'PaperlessBilling',
+       u'PaymentMethod', u'MonthlyCharges', u'TotalCharges', u'Churn'],
+      dtype='object')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Find indexes of empty cells }
+\PY{n}{blanks} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{applymap}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{k}{print} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{blanks}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{blanks}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}11 blanks on column 19, Total Charges}
+\PY{c+c1}{\PYZsh{}drop blank rows}
+\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{blanks}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{)}
+\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}drop customerID column}
+\PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{customerID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}change data types on some columns}
+\PY{n}{cleaned\PYZus{}data} \PY{o}{=} \PY{n}{raw\PYZus{}data}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TotalCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float64}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tenure}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{int64}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SeniorCitizen}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gender}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SeniorCitizen}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{int64}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Partner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Dependents}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+       \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PhoneService}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MultipleLines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{InternetService}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+       \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OnlineSecurity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OnlineBackup}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DeviceProtection}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TechSupport}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+       \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{StreamingTV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{StreamingMovies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Contract}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PaperlessBilling}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+       \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PaymentMethod}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{cleaned\PYZus{}data}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\PY{n}{cleaned\PYZus{}data}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\PY{n}{cleaned\PYZus{}data}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 488  753  936 1082 1340 3331 3826 4380 5218 6670 6754]
+ [  19   19   19   19   19   19   19   19   19   19   19]]
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 7032 entries, 0 to 7031
+Data columns (total 20 columns):
+gender              7032 non-null object
+SeniorCitizen       7032 non-null int64
+Partner             7032 non-null object
+Dependents          7032 non-null object
+tenure              7032 non-null int64
+PhoneService        7032 non-null object
+MultipleLines       7032 non-null object
+InternetService     7032 non-null object
+OnlineSecurity      7032 non-null object
+OnlineBackup        7032 non-null object
+DeviceProtection    7032 non-null object
+TechSupport         7032 non-null object
+StreamingTV         7032 non-null object
+StreamingMovies     7032 non-null object
+Contract            7032 non-null object
+PaperlessBilling    7032 non-null object
+PaymentMethod       7032 non-null object
+MonthlyCharges      7032 non-null float64
+TotalCharges        7032 non-null float64
+Churn               7032 non-null category
+dtypes: category(1), float64(2), int64(2), object(15)
+memory usage: 1.0+ MB
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+      gender  SeniorCitizen Partner Dependents  tenure PhoneService  \textbackslash{}
+0     Female              0     Yes         No       1           No
+1       Male              0      No         No      34          Yes
+2       Male              0      No         No       2          Yes
+3       Male              0      No         No      45           No
+4     Female              0      No         No       2          Yes
+5     Female              0      No         No       8          Yes
+6       Male              0      No        Yes      22          Yes
+7     Female              0      No         No      10           No
+8     Female              0     Yes         No      28          Yes
+9       Male              0      No        Yes      62          Yes
+10      Male              0     Yes        Yes      13          Yes
+11      Male              0      No         No      16          Yes
+12      Male              0     Yes         No      58          Yes
+13      Male              0      No         No      49          Yes
+14      Male              0      No         No      25          Yes
+15    Female              0     Yes        Yes      69          Yes
+16    Female              0      No         No      52          Yes
+17      Male              0      No        Yes      71          Yes
+18    Female              0     Yes        Yes      10          Yes
+19    Female              0      No         No      21          Yes
+20      Male              1      No         No       1           No
+21      Male              0     Yes         No      12          Yes
+22      Male              0      No         No       1          Yes
+23    Female              0     Yes         No      58          Yes
+24      Male              0     Yes        Yes      49          Yes
+25    Female              0      No         No      30          Yes
+26      Male              0     Yes        Yes      47          Yes
+27      Male              0     Yes        Yes       1           No
+28      Male              0     Yes         No      72          Yes
+29    Female              0      No        Yes      17          Yes
+{\ldots}      {\ldots}            {\ldots}     {\ldots}        {\ldots}     {\ldots}          {\ldots}
+7002  Female              0      No         No      40          Yes
+7003    Male              0      No         No      41          Yes
+7004    Male              1     Yes         No      34          Yes
+7005  Female              0      No         No       1          Yes
+7006  Female              0      No         No      51          Yes
+7007    Male              0     Yes        Yes       1          Yes
+7008  Female              0      No         No      39          Yes
+7009    Male              0     Yes        Yes      12          Yes
+7010    Male              0      No         No      12          Yes
+7011    Male              0      No         No      72          Yes
+7012  Female              1     Yes         No      63          Yes
+7013    Male              0     Yes         No      44          Yes
+7014  Female              0      No         No      18          Yes
+7015  Female              0      No         No       9          Yes
+7016    Male              0      No         No      13          Yes
+7017  Female              0     Yes         No      68          Yes
+7018  Female              1      No         No       6           No
+7019  Female              0      No         No       2          Yes
+7020    Male              1     Yes         No      55          Yes
+7021    Male              1      No         No       1          Yes
+7022    Male              0      No         No      38          Yes
+7023  Female              0      No         No      67          Yes
+7024    Male              0      No         No      19          Yes
+7025  Female              0      No         No      12           No
+7026  Female              0      No         No      72          Yes
+7027    Male              0     Yes        Yes      24          Yes
+7028  Female              0     Yes        Yes      72          Yes
+7029  Female              0     Yes        Yes      11           No
+7030    Male              1     Yes         No       4          Yes
+7031    Male              0      No         No      66          Yes
+
+         MultipleLines InternetService       OnlineSecurity  \textbackslash{}
+0     No phone service             DSL                   No
+1                   No             DSL                  Yes
+2                   No             DSL                  Yes
+3     No phone service             DSL                  Yes
+4                   No     Fiber optic                   No
+5                  Yes     Fiber optic                   No
+6                  Yes     Fiber optic                   No
+7     No phone service             DSL                  Yes
+8                  Yes     Fiber optic                   No
+9                   No             DSL                  Yes
+10                  No             DSL                  Yes
+11                  No              No  No internet service
+12                 Yes     Fiber optic                   No
+13                 Yes     Fiber optic                   No
+14                  No     Fiber optic                  Yes
+15                 Yes     Fiber optic                  Yes
+16                  No              No  No internet service
+17                 Yes     Fiber optic                  Yes
+18                  No             DSL                   No
+19                  No     Fiber optic                   No
+20    No phone service             DSL                   No
+21                  No              No  No internet service
+22                  No              No  No internet service
+23                 Yes             DSL                   No
+24                  No             DSL                  Yes
+25                  No             DSL                  Yes
+26                 Yes     Fiber optic                   No
+27    No phone service             DSL                   No
+28                 Yes             DSL                  Yes
+29                  No             DSL                   No
+{\ldots}                {\ldots}             {\ldots}                  {\ldots}
+7002               Yes     Fiber optic                   No
+7003               Yes     Fiber optic                   No
+7004                No     Fiber optic                   No
+7005                No             DSL                   No
+7006                No              No  No internet service
+7007                No     Fiber optic                   No
+7008                No              No  No internet service
+7009                No              No  No internet service
+7010                No             DSL                   No
+7011               Yes     Fiber optic                   No
+7012               Yes     Fiber optic                   No
+7013               Yes     Fiber optic                  Yes
+7014               Yes     Fiber optic                   No
+7015                No             DSL                   No
+7016                No             DSL                   No
+7017                No             DSL                   No
+7018  No phone service             DSL                   No
+7019                No              No  No internet service
+7020               Yes             DSL                  Yes
+7021               Yes     Fiber optic                   No
+7022                No     Fiber optic                   No
+7023               Yes     Fiber optic                  Yes
+7024                No     Fiber optic                   No
+7025  No phone service             DSL                   No
+7026                No              No  No internet service
+7027               Yes             DSL                  Yes
+7028               Yes     Fiber optic                   No
+7029  No phone service             DSL                  Yes
+7030               Yes     Fiber optic                   No
+7031                No     Fiber optic                  Yes
+
+             OnlineBackup     DeviceProtection          TechSupport  \textbackslash{}
+0                     Yes                   No                   No
+1                      No                  Yes                   No
+2                     Yes                   No                   No
+3                      No                  Yes                  Yes
+4                      No                   No                   No
+5                      No                  Yes                   No
+6                     Yes                   No                   No
+7                      No                   No                   No
+8                      No                  Yes                  Yes
+9                     Yes                   No                   No
+10                     No                   No                   No
+11    No internet service  No internet service  No internet service
+12                     No                  Yes                   No
+13                    Yes                  Yes                   No
+14                     No                  Yes                  Yes
+15                    Yes                  Yes                  Yes
+16    No internet service  No internet service  No internet service
+17                     No                  Yes                   No
+18                     No                  Yes                  Yes
+19                    Yes                  Yes                   No
+20                     No                  Yes                   No
+21    No internet service  No internet service  No internet service
+22    No internet service  No internet service  No internet service
+23                    Yes                   No                  Yes
+24                    Yes                   No                  Yes
+25                    Yes                   No                   No
+26                    Yes                   No                   No
+27                    Yes                   No                   No
+28                    Yes                  Yes                  Yes
+29                     No                   No                   No
+{\ldots}                   {\ldots}                  {\ldots}                  {\ldots}
+7002                  Yes                  Yes                   No
+7003                  Yes                   No                   No
+7004                   No                  Yes                   No
+7005                  Yes                   No                   No
+7006  No internet service  No internet service  No internet service
+7007                   No                   No                   No
+7008  No internet service  No internet service  No internet service
+7009  No internet service  No internet service  No internet service
+7010                   No                   No                  Yes
+7011                  Yes                  Yes                   No
+7012                  Yes                  Yes                   No
+7013                   No                  Yes                   No
+7014                   No                  Yes                  Yes
+7015                   No                   No                   No
+7016                  Yes                   No                  Yes
+7017                  Yes                   No                  Yes
+7018                   No                   No                   No
+7019  No internet service  No internet service  No internet service
+7020                  Yes                   No                   No
+7021                   No                   No                   No
+7022                   No                   No                   No
+7023                  Yes                  Yes                   No
+7024                   No                   No                   No
+7025                  Yes                  Yes                  Yes
+7026  No internet service  No internet service  No internet service
+7027                   No                  Yes                  Yes
+7028                  Yes                  Yes                   No
+7029                   No                   No                   No
+7030                   No                   No                   No
+7031                   No                  Yes                  Yes
+
+              StreamingTV      StreamingMovies        Contract  \textbackslash{}
+0                      No                   No  Month-to-month
+1                      No                   No        One year
+2                      No                   No  Month-to-month
+3                      No                   No        One year
+4                      No                   No  Month-to-month
+5                     Yes                  Yes  Month-to-month
+6                     Yes                   No  Month-to-month
+7                      No                   No  Month-to-month
+8                     Yes                  Yes  Month-to-month
+9                      No                   No        One year
+10                     No                   No  Month-to-month
+11    No internet service  No internet service        Two year
+12                    Yes                  Yes        One year
+13                    Yes                  Yes  Month-to-month
+14                    Yes                  Yes  Month-to-month
+15                    Yes                  Yes        Two year
+16    No internet service  No internet service        One year
+17                    Yes                  Yes        Two year
+18                     No                   No  Month-to-month
+19                     No                  Yes  Month-to-month
+20                     No                  Yes  Month-to-month
+21    No internet service  No internet service        One year
+22    No internet service  No internet service  Month-to-month
+23                     No                   No        Two year
+24                     No                   No  Month-to-month
+25                     No                   No  Month-to-month
+26                    Yes                  Yes  Month-to-month
+27                     No                   No  Month-to-month
+28                    Yes                  Yes        Two year
+29                    Yes                  Yes  Month-to-month
+{\ldots}                   {\ldots}                  {\ldots}             {\ldots}
+7002                  Yes                   No  Month-to-month
+7003                  Yes                   No  Month-to-month
+7004                  Yes                   No  Month-to-month
+7005                   No                   No  Month-to-month
+7006  No internet service  No internet service        Two year
+7007                   No                   No  Month-to-month
+7008  No internet service  No internet service        Two year
+7009  No internet service  No internet service  Month-to-month
+7010                  Yes                   No        One year
+7011                  Yes                  Yes        One year
+7012                  Yes                  Yes  Month-to-month
+7013                   No                   No  Month-to-month
+7014                   No                  Yes  Month-to-month
+7015                   No                   No  Month-to-month
+7016                  Yes                  Yes  Month-to-month
+7017                  Yes                   No        Two year
+7018                  Yes                  Yes  Month-to-month
+7019  No internet service  No internet service  Month-to-month
+7020                   No                   No        One year
+7021                   No                   No  Month-to-month
+7022                   No                   No  Month-to-month
+7023                  Yes                   No  Month-to-month
+7024                  Yes                   No  Month-to-month
+7025                  Yes                  Yes        One year
+7026  No internet service  No internet service        Two year
+7027                  Yes                  Yes        One year
+7028                  Yes                  Yes        One year
+7029                   No                   No  Month-to-month
+7030                   No                   No  Month-to-month
+7031                  Yes                  Yes        Two year
+
+     PaperlessBilling              PaymentMethod  MonthlyCharges  \textbackslash{}
+0                 Yes           Electronic check           29.85
+1                  No               Mailed check           56.95
+2                 Yes               Mailed check           53.85
+3                  No  Bank transfer (automatic)           42.30
+4                 Yes           Electronic check           70.70
+5                 Yes           Electronic check           99.65
+6                 Yes    Credit card (automatic)           89.10
+7                  No               Mailed check           29.75
+8                 Yes           Electronic check          104.80
+9                  No  Bank transfer (automatic)           56.15
+10                Yes               Mailed check           49.95
+11                 No    Credit card (automatic)           18.95
+12                 No    Credit card (automatic)          100.35
+13                Yes  Bank transfer (automatic)          103.70
+14                Yes           Electronic check          105.50
+15                 No    Credit card (automatic)          113.25
+16                 No               Mailed check           20.65
+17                 No  Bank transfer (automatic)          106.70
+18                 No    Credit card (automatic)           55.20
+19                Yes           Electronic check           90.05
+20                Yes           Electronic check           39.65
+21                 No  Bank transfer (automatic)           19.80
+22                 No               Mailed check           20.15
+23                Yes    Credit card (automatic)           59.90
+24                 No    Credit card (automatic)           59.60
+25                Yes  Bank transfer (automatic)           55.30
+26                Yes           Electronic check           99.35
+27                 No           Electronic check           30.20
+28                Yes    Credit card (automatic)           90.25
+29                Yes               Mailed check           64.70
+{\ldots}               {\ldots}                        {\ldots}             {\ldots}
+7002              Yes  Bank transfer (automatic)           93.40
+7003              Yes           Electronic check           89.20
+7004              Yes    Credit card (automatic)           85.20
+7005               No           Electronic check           49.95
+7006               No  Bank transfer (automatic)           20.65
+7007              Yes               Mailed check           70.65
+7008               No               Mailed check           20.15
+7009              Yes           Electronic check           19.20
+7010              Yes           Electronic check           59.80
+7011              Yes           Electronic check          104.95
+7012              Yes           Electronic check          103.50
+7013              Yes    Credit card (automatic)           84.80
+7014              Yes  Bank transfer (automatic)           95.05
+7015              Yes  Bank transfer (automatic)           44.20
+7016               No               Mailed check           73.35
+7017               No  Bank transfer (automatic)           64.10
+7018              Yes           Electronic check           44.40
+7019              Yes               Mailed check           20.05
+7020               No    Credit card (automatic)           60.00
+7021              Yes           Electronic check           75.75
+7022              Yes    Credit card (automatic)           69.50
+7023              Yes    Credit card (automatic)          102.95
+7024              Yes  Bank transfer (automatic)           78.70
+7025               No           Electronic check           60.65
+7026              Yes  Bank transfer (automatic)           21.15
+7027              Yes               Mailed check           84.80
+7028              Yes    Credit card (automatic)          103.20
+7029              Yes           Electronic check           29.60
+7030              Yes               Mailed check           74.40
+7031              Yes  Bank transfer (automatic)          105.65
+
+      TotalCharges Churn
+0            29.85    No
+1          1889.50    No
+2           108.15   Yes
+3          1840.75    No
+4           151.65   Yes
+5           820.50   Yes
+6          1949.40    No
+7           301.90    No
+8          3046.05   Yes
+9          3487.95    No
+10          587.45    No
+11          326.80    No
+12         5681.10    No
+13         5036.30   Yes
+14         2686.05    No
+15         7895.15    No
+16         1022.95    No
+17         7382.25    No
+18          528.35   Yes
+19         1862.90    No
+20           39.65   Yes
+21          202.25    No
+22           20.15   Yes
+23         3505.10    No
+24         2970.30    No
+25         1530.60    No
+26         4749.15   Yes
+27           30.20   Yes
+28         6369.45    No
+29         1093.10   Yes
+{\ldots}            {\ldots}   {\ldots}
+7002       3756.40    No
+7003       3645.75    No
+7004       2874.45    No
+7005         49.95    No
+7006       1020.75    No
+7007         70.65   Yes
+7008        826.00    No
+7009        239.00    No
+7010        727.80   Yes
+7011       7544.30    No
+7012       6479.40    No
+7013       3626.35    No
+7014       1679.40    No
+7015        403.35   Yes
+7016        931.55    No
+7017       4326.25    No
+7018        263.05    No
+7019         39.25    No
+7020       3316.10    No
+7021         75.75   Yes
+7022       2625.25    No
+7023       6886.25   Yes
+7024       1495.10    No
+7025        743.30    No
+7026       1419.40    No
+7027       1990.50    No
+7028       7362.90    No
+7029        346.45    No
+7030        306.60   Yes
+7031       6844.50    No
+
+[7032 rows x 20 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Simplify columns by replacing \PYZsq{}No Internet Service\PYZsq{} to \PYZsq{}No\PYZsq{} for  \PYZsq{}OnlineSecurity\PYZsq{}, \PYZsq{}OnlineBackup\PYZsq{}, }
+\PY{c+c1}{\PYZsh{} \PYZsq{}DeviceProtection\PYZsq{},\PYZsq{}TechSupport\PYZsq{},\PYZsq{}StreamingTV\PYZsq{},\PYZsq{}StreamingMovies\PYZsq{}  }
+\PY{n}{cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OnlineSecurity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OnlineBackup}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DeviceProtection}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TechSupport}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{StreamingTV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{StreamingMovies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{cols}\PY{p}{:}
+    \PY{n}{cleaned\PYZus{}data}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{cleaned\PYZus{}data}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No internet service}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+    
+\PY{n}{cleaned\PYZus{}data}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+      gender  SeniorCitizen Partner Dependents  tenure PhoneService  \textbackslash{}
+0     Female              0     Yes         No       1           No
+1       Male              0      No         No      34          Yes
+2       Male              0      No         No       2          Yes
+3       Male              0      No         No      45           No
+4     Female              0      No         No       2          Yes
+5     Female              0      No         No       8          Yes
+6       Male              0      No        Yes      22          Yes
+7     Female              0      No         No      10           No
+8     Female              0     Yes         No      28          Yes
+9       Male              0      No        Yes      62          Yes
+10      Male              0     Yes        Yes      13          Yes
+11      Male              0      No         No      16          Yes
+12      Male              0     Yes         No      58          Yes
+13      Male              0      No         No      49          Yes
+14      Male              0      No         No      25          Yes
+15    Female              0     Yes        Yes      69          Yes
+16    Female              0      No         No      52          Yes
+17      Male              0      No        Yes      71          Yes
+18    Female              0     Yes        Yes      10          Yes
+19    Female              0      No         No      21          Yes
+20      Male              1      No         No       1           No
+21      Male              0     Yes         No      12          Yes
+22      Male              0      No         No       1          Yes
+23    Female              0     Yes         No      58          Yes
+24      Male              0     Yes        Yes      49          Yes
+25    Female              0      No         No      30          Yes
+26      Male              0     Yes        Yes      47          Yes
+27      Male              0     Yes        Yes       1           No
+28      Male              0     Yes         No      72          Yes
+29    Female              0      No        Yes      17          Yes
+{\ldots}      {\ldots}            {\ldots}     {\ldots}        {\ldots}     {\ldots}          {\ldots}
+7002  Female              0      No         No      40          Yes
+7003    Male              0      No         No      41          Yes
+7004    Male              1     Yes         No      34          Yes
+7005  Female              0      No         No       1          Yes
+7006  Female              0      No         No      51          Yes
+7007    Male              0     Yes        Yes       1          Yes
+7008  Female              0      No         No      39          Yes
+7009    Male              0     Yes        Yes      12          Yes
+7010    Male              0      No         No      12          Yes
+7011    Male              0      No         No      72          Yes
+7012  Female              1     Yes         No      63          Yes
+7013    Male              0     Yes         No      44          Yes
+7014  Female              0      No         No      18          Yes
+7015  Female              0      No         No       9          Yes
+7016    Male              0      No         No      13          Yes
+7017  Female              0     Yes         No      68          Yes
+7018  Female              1      No         No       6           No
+7019  Female              0      No         No       2          Yes
+7020    Male              1     Yes         No      55          Yes
+7021    Male              1      No         No       1          Yes
+7022    Male              0      No         No      38          Yes
+7023  Female              0      No         No      67          Yes
+7024    Male              0      No         No      19          Yes
+7025  Female              0      No         No      12           No
+7026  Female              0      No         No      72          Yes
+7027    Male              0     Yes        Yes      24          Yes
+7028  Female              0     Yes        Yes      72          Yes
+7029  Female              0     Yes        Yes      11           No
+7030    Male              1     Yes         No       4          Yes
+7031    Male              0      No         No      66          Yes
+
+         MultipleLines InternetService OnlineSecurity OnlineBackup  \textbackslash{}
+0     No phone service             DSL             No          Yes
+1                   No             DSL            Yes           No
+2                   No             DSL            Yes          Yes
+3     No phone service             DSL            Yes           No
+4                   No     Fiber optic             No           No
+5                  Yes     Fiber optic             No           No
+6                  Yes     Fiber optic             No          Yes
+7     No phone service             DSL            Yes           No
+8                  Yes     Fiber optic             No           No
+9                   No             DSL            Yes          Yes
+10                  No             DSL            Yes           No
+11                  No              No             No           No
+12                 Yes     Fiber optic             No           No
+13                 Yes     Fiber optic             No          Yes
+14                  No     Fiber optic            Yes           No
+15                 Yes     Fiber optic            Yes          Yes
+16                  No              No             No           No
+17                 Yes     Fiber optic            Yes           No
+18                  No             DSL             No           No
+19                  No     Fiber optic             No          Yes
+20    No phone service             DSL             No           No
+21                  No              No             No           No
+22                  No              No             No           No
+23                 Yes             DSL             No          Yes
+24                  No             DSL            Yes          Yes
+25                  No             DSL            Yes          Yes
+26                 Yes     Fiber optic             No          Yes
+27    No phone service             DSL             No          Yes
+28                 Yes             DSL            Yes          Yes
+29                  No             DSL             No           No
+{\ldots}                {\ldots}             {\ldots}            {\ldots}          {\ldots}
+7002               Yes     Fiber optic             No          Yes
+7003               Yes     Fiber optic             No          Yes
+7004                No     Fiber optic             No           No
+7005                No             DSL             No          Yes
+7006                No              No             No           No
+7007                No     Fiber optic             No           No
+7008                No              No             No           No
+7009                No              No             No           No
+7010                No             DSL             No           No
+7011               Yes     Fiber optic             No          Yes
+7012               Yes     Fiber optic             No          Yes
+7013               Yes     Fiber optic            Yes           No
+7014               Yes     Fiber optic             No           No
+7015                No             DSL             No           No
+7016                No             DSL             No          Yes
+7017                No             DSL             No          Yes
+7018  No phone service             DSL             No           No
+7019                No              No             No           No
+7020               Yes             DSL            Yes          Yes
+7021               Yes     Fiber optic             No           No
+7022                No     Fiber optic             No           No
+7023               Yes     Fiber optic            Yes          Yes
+7024                No     Fiber optic             No           No
+7025  No phone service             DSL             No          Yes
+7026                No              No             No           No
+7027               Yes             DSL            Yes           No
+7028               Yes     Fiber optic             No          Yes
+7029  No phone service             DSL            Yes           No
+7030               Yes     Fiber optic             No           No
+7031                No     Fiber optic            Yes           No
+
+     DeviceProtection TechSupport StreamingTV StreamingMovies        Contract  \textbackslash{}
+0                  No          No          No              No  Month-to-month
+1                 Yes          No          No              No        One year
+2                  No          No          No              No  Month-to-month
+3                 Yes         Yes          No              No        One year
+4                  No          No          No              No  Month-to-month
+5                 Yes          No         Yes             Yes  Month-to-month
+6                  No          No         Yes              No  Month-to-month
+7                  No          No          No              No  Month-to-month
+8                 Yes         Yes         Yes             Yes  Month-to-month
+9                  No          No          No              No        One year
+10                 No          No          No              No  Month-to-month
+11                 No          No          No              No        Two year
+12                Yes          No         Yes             Yes        One year
+13                Yes          No         Yes             Yes  Month-to-month
+14                Yes         Yes         Yes             Yes  Month-to-month
+15                Yes         Yes         Yes             Yes        Two year
+16                 No          No          No              No        One year
+17                Yes          No         Yes             Yes        Two year
+18                Yes         Yes          No              No  Month-to-month
+19                Yes          No          No             Yes  Month-to-month
+20                Yes          No          No             Yes  Month-to-month
+21                 No          No          No              No        One year
+22                 No          No          No              No  Month-to-month
+23                 No         Yes          No              No        Two year
+24                 No         Yes          No              No  Month-to-month
+25                 No          No          No              No  Month-to-month
+26                 No          No         Yes             Yes  Month-to-month
+27                 No          No          No              No  Month-to-month
+28                Yes         Yes         Yes             Yes        Two year
+29                 No          No         Yes             Yes  Month-to-month
+{\ldots}               {\ldots}         {\ldots}         {\ldots}             {\ldots}             {\ldots}
+7002              Yes          No         Yes              No  Month-to-month
+7003               No          No         Yes              No  Month-to-month
+7004              Yes          No         Yes              No  Month-to-month
+7005               No          No          No              No  Month-to-month
+7006               No          No          No              No        Two year
+7007               No          No          No              No  Month-to-month
+7008               No          No          No              No        Two year
+7009               No          No          No              No  Month-to-month
+7010               No         Yes         Yes              No        One year
+7011              Yes          No         Yes             Yes        One year
+7012              Yes          No         Yes             Yes  Month-to-month
+7013              Yes          No          No              No  Month-to-month
+7014              Yes         Yes          No             Yes  Month-to-month
+7015               No          No          No              No  Month-to-month
+7016               No         Yes         Yes             Yes  Month-to-month
+7017               No         Yes         Yes              No        Two year
+7018               No          No         Yes             Yes  Month-to-month
+7019               No          No          No              No  Month-to-month
+7020               No          No          No              No        One year
+7021               No          No          No              No  Month-to-month
+7022               No          No          No              No  Month-to-month
+7023              Yes          No         Yes              No  Month-to-month
+7024               No          No         Yes              No  Month-to-month
+7025              Yes         Yes         Yes             Yes        One year
+7026               No          No          No              No        Two year
+7027              Yes         Yes         Yes             Yes        One year
+7028              Yes          No         Yes             Yes        One year
+7029               No          No          No              No  Month-to-month
+7030               No          No          No              No  Month-to-month
+7031              Yes         Yes         Yes             Yes        Two year
+
+     PaperlessBilling              PaymentMethod  MonthlyCharges  \textbackslash{}
+0                 Yes           Electronic check           29.85
+1                  No               Mailed check           56.95
+2                 Yes               Mailed check           53.85
+3                  No  Bank transfer (automatic)           42.30
+4                 Yes           Electronic check           70.70
+5                 Yes           Electronic check           99.65
+6                 Yes    Credit card (automatic)           89.10
+7                  No               Mailed check           29.75
+8                 Yes           Electronic check          104.80
+9                  No  Bank transfer (automatic)           56.15
+10                Yes               Mailed check           49.95
+11                 No    Credit card (automatic)           18.95
+12                 No    Credit card (automatic)          100.35
+13                Yes  Bank transfer (automatic)          103.70
+14                Yes           Electronic check          105.50
+15                 No    Credit card (automatic)          113.25
+16                 No               Mailed check           20.65
+17                 No  Bank transfer (automatic)          106.70
+18                 No    Credit card (automatic)           55.20
+19                Yes           Electronic check           90.05
+20                Yes           Electronic check           39.65
+21                 No  Bank transfer (automatic)           19.80
+22                 No               Mailed check           20.15
+23                Yes    Credit card (automatic)           59.90
+24                 No    Credit card (automatic)           59.60
+25                Yes  Bank transfer (automatic)           55.30
+26                Yes           Electronic check           99.35
+27                 No           Electronic check           30.20
+28                Yes    Credit card (automatic)           90.25
+29                Yes               Mailed check           64.70
+{\ldots}               {\ldots}                        {\ldots}             {\ldots}
+7002              Yes  Bank transfer (automatic)           93.40
+7003              Yes           Electronic check           89.20
+7004              Yes    Credit card (automatic)           85.20
+7005               No           Electronic check           49.95
+7006               No  Bank transfer (automatic)           20.65
+7007              Yes               Mailed check           70.65
+7008               No               Mailed check           20.15
+7009              Yes           Electronic check           19.20
+7010              Yes           Electronic check           59.80
+7011              Yes           Electronic check          104.95
+7012              Yes           Electronic check          103.50
+7013              Yes    Credit card (automatic)           84.80
+7014              Yes  Bank transfer (automatic)           95.05
+7015              Yes  Bank transfer (automatic)           44.20
+7016               No               Mailed check           73.35
+7017               No  Bank transfer (automatic)           64.10
+7018              Yes           Electronic check           44.40
+7019              Yes               Mailed check           20.05
+7020               No    Credit card (automatic)           60.00
+7021              Yes           Electronic check           75.75
+7022              Yes    Credit card (automatic)           69.50
+7023              Yes    Credit card (automatic)          102.95
+7024              Yes  Bank transfer (automatic)           78.70
+7025               No           Electronic check           60.65
+7026              Yes  Bank transfer (automatic)           21.15
+7027              Yes               Mailed check           84.80
+7028              Yes    Credit card (automatic)          103.20
+7029              Yes           Electronic check           29.60
+7030              Yes               Mailed check           74.40
+7031              Yes  Bank transfer (automatic)          105.65
+
+      TotalCharges Churn
+0            29.85    No
+1          1889.50    No
+2           108.15   Yes
+3          1840.75    No
+4           151.65   Yes
+5           820.50   Yes
+6          1949.40    No
+7           301.90    No
+8          3046.05   Yes
+9          3487.95    No
+10          587.45    No
+11          326.80    No
+12         5681.10    No
+13         5036.30   Yes
+14         2686.05    No
+15         7895.15    No
+16         1022.95    No
+17         7382.25    No
+18          528.35   Yes
+19         1862.90    No
+20           39.65   Yes
+21          202.25    No
+22           20.15   Yes
+23         3505.10    No
+24         2970.30    No
+25         1530.60    No
+26         4749.15   Yes
+27           30.20   Yes
+28         6369.45    No
+29         1093.10   Yes
+{\ldots}            {\ldots}   {\ldots}
+7002       3756.40    No
+7003       3645.75    No
+7004       2874.45    No
+7005         49.95    No
+7006       1020.75    No
+7007         70.65   Yes
+7008        826.00    No
+7009        239.00    No
+7010        727.80   Yes
+7011       7544.30    No
+7012       6479.40    No
+7013       3626.35    No
+7014       1679.40    No
+7015        403.35   Yes
+7016        931.55    No
+7017       4326.25    No
+7018        263.05    No
+7019         39.25    No
+7020       3316.10    No
+7021         75.75   Yes
+7022       2625.25    No
+7023       6886.25   Yes
+7024       1495.10    No
+7025        743.30    No
+7026       1419.40    No
+7027       1990.50    No
+7028       7362.90    No
+7029        346.45    No
+7030        306.60   Yes
+7031       6844.50    No
+
+[7032 rows x 20 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \section{\texorpdfstring{ 3. Data Preparation and Exploratory Data
+Analysis ( index
+)}{ 3. Data Preparation and Exploratory Data Analysis    ( index )}}\label{data-preparation-and-exploratory-data-analysis-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} separate features and labels dataframe}
+\PY{n}{y} \PY{o}{=} \PY{n}{cleaned\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{X} \PY{o}{=} \PY{n}{cleaned\PYZus{}data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}display some basic statistics}
+\PY{n}{display}\PY{p}{(}\PY{n}{cleaned\PYZus{}data}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SeniorCitizen}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tenure}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MonthlyCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TotalCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{verbatim}
+       SeniorCitizen       tenure  MonthlyCharges  TotalCharges
+count    7032.000000  7032.000000     7032.000000   7032.000000
+mean        0.162400    32.421786       64.798208   2283.300441
+std         0.368844    24.545260       30.085974   2266.771362
+min         0.000000     1.000000       18.250000     18.800000
+25%         0.000000     9.000000       35.587500    401.450000
+50%         0.000000    29.000000       70.350000   1397.475000
+75%         0.000000    55.000000       89.862500   3794.737500
+max         1.000000    72.000000      118.750000   8684.800000
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+       gender Partner Dependents PhoneService MultipleLines InternetService  \
+count    7032    7032       7032         7032          7032            7032   
+unique      2       2          2            2             3               3   
+top      Male      No         No          Yes            No     Fiber optic   
+freq     3549    3639       4933         6352          3385            3096   
+
+       OnlineSecurity OnlineBackup DeviceProtection TechSupport StreamingTV  \
+count            7032         7032             7032        7032        7032   
+unique              2            2                2           2           2   
+top                No           No               No          No          No   
+freq             5017         4607             4614        4992        4329   
+
+       StreamingMovies        Contract PaperlessBilling     PaymentMethod  
+count             7032            7032             7032              7032  
+unique               2               3                2                 4  
+top                 No  Month-to-month              Yes  Electronic check  
+freq              4301            3875             4168              2365  
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+       Churn
+count   7032
+unique     2
+top       No
+freq    5163
+    \end{verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}explore data distribution}
+\PY{n}{num\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tenure}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MonthlyCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TotalCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{pd}\PY{o}{.}\PY{n}{plotting}\PY{o}{.}\PY{n}{scatter\PYZus{}matrix}\PY{p}{(}\PY{n}{cleaned\PYZus{}data}\PY{p}{[}\PY{n}{num\PYZus{}cols}\PY{p}{]}\PY{p}{,} \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{,}
+                           \PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{)}\PY{p}{,} \PY{n}{diagonal} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kde}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} inspect for outliers,  boxplots for numerical fields}
+\PY{n}{cleaned\PYZus{}data}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{column} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tenure}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MonthlyCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n}{cleaned\PYZus{}data}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{column} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TotalCharges}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}scale numerical fields}
+\PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}
+
+\PY{n}{scaler} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{X}\PY{p}{[}\PY{n}{num\PYZus{}cols}\PY{p}{]} \PY{o}{=} \PY{n}{scaler}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{n}{num\PYZus{}cols}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/gino/anaconda2/lib/python2.7/site-
+packages/sklearn/preprocessing/data.py:625: DataConversionWarning: Data with
+input dtype int64, float64 were all converted to float64 by StandardScaler.
+  return self.partial\_fit(X, y)
+/home/gino/anaconda2/lib/python2.7/site-packages/sklearn/base.py:462:
+DataConversionWarning: Data with input dtype int64, float64 were all converted
+to float64 by StandardScaler.
+  return self.fit(X, **fit\_params).transform(X)
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}One\PYZhy{}Hot encode relevant fields}
+
+\PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{LabelEncoder}
+
+\PY{c+c1}{\PYZsh{}transform y to binary}
+\PY{n}{lb} \PY{o}{=} \PY{n}{LabelEncoder}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{y} \PY{o}{=} \PY{n}{lb}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}convert back to DF}
+\PY{n}{y} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}transform Binary category columns of X to 1\PYZsq{}s and 0\PYZsq{}s}
+\PY{n}{bin\PYZus{}cols} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{X}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{bin\PYZus{}cols}\PY{p}{:}
+    \PY{n}{X}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{lb}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{}transform Non\PYZhy{}Binary category columns of X to one hot encode    }
+\PY{n}{non\PYZus{}bin\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MultipleLines}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{InternetService}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Contract}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PaymentMethod}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{X} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{data} \PY{o}{=} \PY{n}{X}\PY{p}{,} \PY{n}{columns} \PY{o}{=} \PY{n}{non\PYZus{}bin\PYZus{}cols}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}view newly created one\PYZhy{}hot features}
+\PY{n}{X}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+            gender  SeniorCitizen      Partner   Dependents        tenure  \textbackslash{}
+count  7032.000000    7032.000000  7032.000000  7032.000000  7.032000e+03
+mean      0.504693       0.162400     0.482509     0.298493 -1.214741e-16
+std       0.500014       0.368844     0.499729     0.457629  1.000071e+00
+min       0.000000       0.000000     0.000000     0.000000 -1.280248e+00
+25\%       0.000000       0.000000     0.000000     0.000000 -9.542963e-01
+50\%       1.000000       0.000000     0.000000     0.000000 -1.394171e-01
+75\%       1.000000       0.000000     1.000000     1.000000  9.199259e-01
+max       1.000000       1.000000     1.000000     1.000000  1.612573e+00
+
+       PhoneService  OnlineSecurity  OnlineBackup  DeviceProtection  \textbackslash{}
+count   7032.000000     7032.000000   7032.000000       7032.000000
+mean       0.903299        0.286547      0.344852          0.343857
+std        0.295571        0.452180      0.475354          0.475028
+min        0.000000        0.000000      0.000000          0.000000
+25\%        1.000000        0.000000      0.000000          0.000000
+50\%        1.000000        0.000000      0.000000          0.000000
+75\%        1.000000        1.000000      1.000000          1.000000
+max        1.000000        1.000000      1.000000          1.000000
+
+       TechSupport             {\ldots}              InternetService\_DSL  \textbackslash{}
+count  7032.000000             {\ldots}                      7032.000000
+mean      0.290102             {\ldots}                         0.343572
+std       0.453842             {\ldots}                         0.474934
+min       0.000000             {\ldots}                         0.000000
+25\%       0.000000             {\ldots}                         0.000000
+50\%       0.000000             {\ldots}                         0.000000
+75\%       1.000000             {\ldots}                         1.000000
+max       1.000000             {\ldots}                         1.000000
+
+       InternetService\_Fiber optic  InternetService\_No  \textbackslash{}
+count                  7032.000000         7032.000000
+mean                      0.440273            0.216155
+std                       0.496455            0.411650
+min                       0.000000            0.000000
+25\%                       0.000000            0.000000
+50\%                       0.000000            0.000000
+75\%                       1.000000            0.000000
+max                       1.000000            1.000000
+
+       Contract\_Month-to-month  Contract\_One year  Contract\_Two year  \textbackslash{}
+count              7032.000000        7032.000000        7032.000000
+mean                  0.551052           0.209329           0.239619
+std                   0.497422           0.406858           0.426881
+min                   0.000000           0.000000           0.000000
+25\%                   0.000000           0.000000           0.000000
+50\%                   1.000000           0.000000           0.000000
+75\%                   1.000000           0.000000           0.000000
+max                   1.000000           1.000000           1.000000
+
+       PaymentMethod\_Bank transfer (automatic)  \textbackslash{}
+count                              7032.000000
+mean                                  0.219283
+std                                   0.413790
+min                                   0.000000
+25\%                                   0.000000
+50\%                                   0.000000
+75\%                                   0.000000
+max                                   1.000000
+
+       PaymentMethod\_Credit card (automatic)  PaymentMethod\_Electronic check  \textbackslash{}
+count                            7032.000000                     7032.000000
+mean                                0.216297                        0.336320
+std                                 0.411748                        0.472483
+min                                 0.000000                        0.000000
+25\%                                 0.000000                        0.000000
+50\%                                 0.000000                        0.000000
+75\%                                 0.000000                        1.000000
+max                                 1.000000                        1.000000
+
+       PaymentMethod\_Mailed check
+count                 7032.000000
+mean                     0.228100
+std                      0.419637
+min                      0.000000
+25\%                      0.000000
+50\%                      0.000000
+75\%                      0.000000
+max                      1.000000
+
+[8 rows x 28 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{\texorpdfstring{ 3.1 Correlation Matrix ( index
+)}{ 3.1 Correlation Matrix    ( index )}}\label{correlation-matrix-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
+
+\PY{n}{joined} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\PY{n}{gr} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{joined}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdYlGn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{rc}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{(}\PY{l+m+mi}{22}\PY{p}{,}\PY{l+m+mi}{14}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{\texorpdfstring{ 3.2 Variables Distribution ( index
+)}{ 3.2 Variables Distribution    ( index )}}\label{variables-distribution-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+ 
+\PY{c+c1}{\PYZsh{} default plot settings}
+\PY{n}{labels} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lightskyblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{explode} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}  \PY{c+c1}{\PYZsh{} explode 1st slice}
+\PY{n}{labelsize} \PY{o}{=} \PY{l+m+mi}{15}
+\PY{n}{titlesize} \PY{o}{=} \PY{l+m+mi}{30}
+\PY{n}{valuesize} \PY{o}{=} \PY{l+m+mi}{15}
+
+\PY{c+c1}{\PYZsh{}function for pie chart to show BOTH value and \PYZpc{}}
+\PY{k}{def} \PY{n+nf}{absolute\PYZus{}value}\PY{p}{(}\PY{n}{val}\PY{p}{)}\PY{p}{:}
+    \PY{n}{a}  \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{val}\PY{o}{/}\PY{l+m+mf}{100.}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{values}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+    \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}.0f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{val}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}.0f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{a}
+
+\PY{c+c1}{\PYZsh{}function to create pie chart}
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{n}{title}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{n}{size} \PY{o}{=} \PY{n}{titlesize}\PY{p}{)} 
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{equal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{font} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{family}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Sans Serif}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{size}\PY{l+s+s1}{\PYZsq{}}   \PY{p}{:} \PY{n}{valuesize}\PY{p}{\PYZcb{}}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{rc}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xtick}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{labelsize}\PY{o}{=}\PY{n}{labelsize}\PY{p}{)} 
+    \PY{n}{plt}\PY{o}{.}\PY{n}{rc}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{font}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{font}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{explode}\PY{o}{=}\PY{n}{explode}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,} \PY{n}{colors}\PY{o}{=}\PY{n}{colors}\PY{p}{,}
+        \PY{n}{autopct}\PY{o}{=}\PY{n}{absolute\PYZus{}value}\PY{p}{,} \PY{n}{shadow}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{startangle}\PY{o}{=}\PY{l+m+mi}{90}\PY{p}{)}
+    \PY{k}{return} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot Data}
+
+\PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{y}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{y}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{]}  \PY{c+c1}{\PYZsh{}[churn, no churn]}
+\PY{n}{plot\PYZus{}pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Distribution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} default plot settings}
+\PY{n}{labels} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lightskyblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{explode} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}  \PY{c+c1}{\PYZsh{} explode 1st slice}
+\PY{n}{labelsize} \PY{o}{=} \PY{l+m+mi}{9}
+\PY{n}{titlesize} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{valuesize} \PY{o}{=} \PY{l+m+mi}{8}
+
+
+\PY{n}{grid} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{GridSpec}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}by Gender}
+\PY{n}{male\PYZus{}churn} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gender}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{female\PYZus{}churn} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gender}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} by Gender}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{male\PYZus{}churn}\PY{p}{,}\PY{n}{female\PYZus{}churn}\PY{p}{]}
+\PY{n}{labels} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Male}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Female}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{plot\PYZus{}pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Rate by Gender}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+
+
+\PY{c+c1}{\PYZsh{} by Senior Citizen}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{senior} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+\PY{n}{senior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SeniorCitizen}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{senior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{senior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{senior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{senior}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n}{labels} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{plot\PYZus{}pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Senior Citizen Churn Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} by Partner}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{partner} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+\PY{n}{partner}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Partner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{partner}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{partner}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{partner}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{partner}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n}{labels} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{plot\PYZus{}pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With Partner Churn Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} by Dependents}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{n}{dependents} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+\PY{n}{dependents}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Dependents}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{dependents}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{dependents}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dependents}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{dependents}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n}{labels} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{plot\PYZus{}pie}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With Dependents Churn Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{\texorpdfstring{ 3.3 Principal Component Analysis ( index
+)}{ 3.3 Principal Component Analysis    ( index )}}\label{principal-component-analysis-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn.decomposition} \PY{k+kn}{import} \PY{n}{PCA}
+\PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components} \PY{o}{=} \PY{l+m+mi}{28}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{pca}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n}{reduced\PYZus{}data} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}convert back to Dataframe}
+\PY{n}{reduced\PYZus{}data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{reduced\PYZus{}data}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}show 1st n\PYZus{}components that comprises 98\PYZpc{} of variance}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1st 21 Components represent}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{pca}\PY{o}{.}\PY{n}{explained\PYZus{}variance\PYZus{}ratio\PYZus{}}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{} o}\PY{l+s+s1}{f Variance}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{c+c1}{\PYZsh{}use only 1st 21 components}
+\PY{n}{drop} \PY{o}{=} \PY{n}{reduced\PYZus{}data}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{l+m+mi}{21}\PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{n}{reduced\PYZus{}data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{drop}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1st 21 Components represent 0.983002583600193 \% of Variance
+\end{Verbatim}
+
+    \section{\texorpdfstring{ 4. Model Creation and Testing
+}{ 4. Model Creation and Testing   }}\label{model-creation-and-testing}
+
+    \subsubsection{\texorpdfstring{ 4.1 Baseline Model ( index
+)}{ 4.1 Baseline Model    ( index )}}\label{baseline-model-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{fbeta\PYZus{}score}\PY{p}{,} \PY{n}{recall\PYZus{}score}\PY{p}{,} \PY{n}{precision\PYZus{}score}\PY{p}{,} \PY{n}{accuracy\PYZus{}score}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}NAIVE BASELINE MODEL\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Assume all customers will churn}
+
+\PY{c+c1}{\PYZsh{}True total number of Churn customers}
+\PY{n}{num\PYZus{}churn} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Naive Prediction: Assume all customers will churn}
+\PY{n}{pred} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}
+
+
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**** BASIC NAIVE Benchmark ****}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{naive\PYZus{}acc} \PY{o}{=} \PY{n}{num\PYZus{}churn} \PY{o}{/} \PY{n}{pred}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Benchmark Accuracy = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}acc}
+
+\PY{n}{naive\PYZus{}f2beta} \PY{o}{=} \PY{n}{fbeta\PYZus{}score}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{beta}\PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Benchmark F2 Beta Score = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}f2beta}
+
+\PY{n}{naive\PYZus{}recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y} \PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Benchmark Recall Score = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}recall}
+
+\PY{n}{naive\PYZus{}precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y} \PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Benchmark Precision Score = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}precision}
+
+
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}IMPROVED NAIVE MODEL\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{c+c1}{\PYZsh{} predictions of customers with less than 12 months tenure}
+
+\PY{c+c1}{\PYZsh{} scale the tenure value of 12 months}
+\PY{n}{transformed\PYZus{}12} \PY{o}{=} \PY{n}{scaler}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{tenure} \PY{o}{=} \PY{n}{y}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}initiate all values to 0}
+\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+
+\PY{c+c1}{\PYZsh{}set prediction to 1 if less than 12 months tenure}
+\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tenure}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{transformed\PYZus{}12}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{acc} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{**** IMPROVED NAIVE Benchmark ****}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Tenure\PYZhy{}based Benchmark Accuracy = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{acc}
+
+\PY{n}{naive\PYZus{}tenure\PYZus{}f2beta} \PY{o}{=} \PY{n}{fbeta\PYZus{}score}\PY{p}{(}\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{beta}\PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Tenure\PYZhy{}based Benchmark F2 Beta Score = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}tenure\PYZus{}f2beta}
+
+\PY{n}{naive\PYZus{}tenure\PYZus{}recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Tenure\PYZhy{}based Benchmark Recall Score = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}tenure\PYZus{}recall}
+  
+\PY{n}{naive\PYZus{}tenure\PYZus{}precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Tenure\PYZhy{}based Benchmark Precision Score = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{naive\PYZus{}tenure\PYZus{}precision}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+**** BASIC NAIVE Benchmark ****
+Naive Benchmark Accuracy =  0.265784982935
+Naive Benchmark F2 Beta Score =  0.6441273779983457
+Naive Benchmark Recall Score =  1.0
+Naive Benchmark Precision Score =  0.26578498293515357
+
+**** IMPROVED NAIVE Benchmark ****
+Naive Tenure-based Benchmark Accuracy =  0.7256825938566553
+Naive Tenure-based Benchmark F2 Beta Score =  0.5239144115796098
+Naive Tenure-based Benchmark Recall Score =  0.5345104333868379
+Naive Tenure-based Benchmark Precision Score =  0.48542274052478135
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create confusion matrix for Improved Naive Benchmark}
+\PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}
+
+\PY{c+c1}{\PYZsh{}conf\PYZus{}matrix\PYZus{}naive = confusion\PYZus{}matrix(y, np.ones((len(y),)))}
+\PY{n}{conf\PYZus{}matrix\PYZus{}naive} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Prediction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tenure}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}convert to DF}
+\PY{n}{df\PYZus{}cf\PYZus{}naive} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{conf\PYZus{}matrix\PYZus{}naive}\PY{p}{,}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                     \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+
+\PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{   **** Improved Naive Benchmark Confusion Matrix ***}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{fig} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df\PYZus{}cf\PYZus{}naive}\PY{p}{,}\PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{fmt} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdYlGn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{rc}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+   **** Improved Naive Benchmark Confusion Matrix ***
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn.model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+\PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{make\PYZus{}scorer}\PY{p}{,} \PY{n}{accuracy\PYZus{}score}
+\PY{k+kn}{from} \PY{n+nn}{sklearn.model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{GridSearchCV}\PY{p}{,} \PY{n}{StratifiedShuffleSplit}
+\PY{k+kn}{import} \PY{n+nn}{pickle}
+
+
+\PY{c+c1}{\PYZsh{} make y into 1d array}
+\PY{n}{y} \PY{o}{=} \PY{n}{y}\PY{o}{.}\PY{n}{values}
+\PY{n}{y} \PY{o}{=} \PY{n}{y}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}create training and test split}
+\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{reduced\PYZus{}data}\PY{p}{,} \PY{n}{y}\PY{p}{,}
+                                                    \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.15}\PY{p}{,} 
+                                                    \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}Create scorer for Grid Search}
+\PY{n}{f2scorer} \PY{o}{=} \PY{n}{make\PYZus{}scorer}\PY{p}{(}\PY{n}{fbeta\PYZus{}score}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}create Stratified Shuffle Split for cross validation}
+\PY{n}{cv} \PY{o}{=} \PY{n}{StratifiedShuffleSplit}\PY{p}{(}\PY{n}{n\PYZus{}splits}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.20}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{\texorpdfstring{ 4.2 Support Vector Machine ( index
+)}{ 4.2 Support Vector Machine    ( index )}}\label{support-vector-machine-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn.svm} \PY{k+kn}{import} \PY{n}{SVC}
+\PY{n}{svc} \PY{o}{=} \PY{n}{SVC}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{svc\PYZus{}parameters} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kernel}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rbf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+m+mf}{1e07}\PY{p}{,} \PY{l+m+mf}{1e09}\PY{p}{,}\PY{l+m+mf}{1000.}\PY{p}{]}\PY{p}{,}
+                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{1e\PYZhy{}09}\PY{p}{,}\PY{l+m+mf}{1e\PYZhy{}10}\PY{p}{]}
+                 \PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} Store in Pickle file.  Uncomment below to rerun classifier with new parameters}
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs = GridSearchCV(svc, svc\PYZus{}parameters, scoring = f2scorer, cv =cv, n\PYZus{}jobs = \PYZhy{}1)}
+
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs.fit(X\PYZus{}train, y\PYZus{}train)}
+
+\PY{c+c1}{\PYZsh{}with open(\PYZsq{}grid\PYZus{}searchcv\PYZus{}svc.pickle\PYZsq{},\PYZsq{}wb\PYZsq{}) as f:}
+\PY{c+c1}{\PYZsh{}        pickle.dump(clf\PYZus{}gs, f)}
+        
+\PY{n}{pickle\PYZus{}in} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid\PYZus{}searchcv\PYZus{}svc.pickle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{clf\PYZus{}gs} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{pickle\PYZus{}in}\PY{p}{)}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}estimator\PYZus{}}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+SVC(C=10000000.0, cache\_size=200, class\_weight=None, coef0=0.0,
+  decision\_function\_shape='ovr', degree=3, gamma=1e-10, kernel='rbf',
+  max\_iter=-1, probability=False, random\_state=1, shrinking=True,
+  tol=0.001, verbose=False)
+\{'kernel': 'rbf', 'C': 10000000.0, 'gamma': 1e-10\}
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{svc} \PY{o}{=} \PY{n}{SVC}\PY{p}{(}\PY{n}{kernel} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kernel}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+          \PY{n}{C} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+          \PY{n}{gamma} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+          \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{p}{)}
+
+\PY{n}{svc}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+SVC(C=10000000.0, cache\_size=200, class\_weight=None, coef0=0.0,
+  decision\_function\_shape='ovr', degree=3, gamma=1e-10, kernel='rbf',
+  max\_iter=-1, probability=False, random\_state=1, shrinking=True,
+  tol=0.001, verbose=False)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{\texorpdfstring{ 4.3. Decision Tree ( index
+)}{ 4.3. Decision Tree    ( index )}}\label{decision-tree-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{tree}
+
+\PY{n}{dt} \PY{o}{=} \PY{n}{tree}\PY{o}{.}\PY{n}{DecisionTreeClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{class\PYZus{}weight}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{balanced}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Parameters for Decision Tree}
+
+\PY{n}{dt\PYZus{}parameters} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{criterion}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gini}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{entropy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{]}\PY{p}{,} 
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{splitter}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{random}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{best}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{min\PYZus{}samples\PYZus{}leaf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}
+                \PY{p}{\PYZcb{}}
+
+
+\PY{c+c1}{\PYZsh{} Store in Pickle file.  Uncomment below to rerun classifier with new parameters}
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs = GridSearchCV(dt, dt\PYZus{}parameters, scoring = f2scorer, cv =cv, n\PYZus{}jobs = \PYZhy{}1)}
+
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs.fit(X\PYZus{}train, y\PYZus{}train)}
+
+\PY{c+c1}{\PYZsh{}with open(\PYZsq{}grid\PYZus{}searchcv\PYZus{}dt.pickle\PYZsq{},\PYZsq{}wb\PYZsq{}) as f:}
+\PY{c+c1}{\PYZsh{}         pickle.dump(clf\PYZus{}gs, f)}
+        
+\PY{n}{pickle\PYZus{}in} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid\PYZus{}searchcv\PYZus{}dt.pickle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{clf\PYZus{}gs} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{pickle\PYZus{}in}\PY{p}{)}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}estimator\PYZus{}}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+DecisionTreeClassifier(class\_weight='balanced', criterion='gini', max\_depth=3,
+            max\_features=None, max\_leaf\_nodes=None,
+            min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+            min\_samples\_leaf=10, min\_samples\_split=2,
+            min\_weight\_fraction\_leaf=0.0, presort=False, random\_state=1,
+            splitter='random')
+\{'splitter': 'random', 'criterion': 'gini', 'max\_depth': 3, 'min\_samples\_leaf':
+10\}
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dt} \PY{o}{=} \PY{n}{tree}\PY{o}{.}\PY{n}{DecisionTreeClassifier}\PY{p}{(}\PY{n}{criterion} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{criterion}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+          \PY{n}{max\PYZus{}depth} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+          \PY{n}{splitter} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{splitter}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+          \PY{n}{min\PYZus{}samples\PYZus{}leaf} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{min\PYZus{}samples\PYZus{}leaf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+          \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} 
+          \PY{n}{class\PYZus{}weight}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{balanced}\PY{l+s+s1}{\PYZsq{}}
+       \PY{p}{)}
+
+\PY{n}{dt}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+DecisionTreeClassifier(class\_weight='balanced', criterion='gini', max\_depth=3,
+            max\_features=None, max\_leaf\_nodes=None,
+            min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+            min\_samples\_leaf=10, min\_samples\_split=2,
+            min\_weight\_fraction\_leaf=0.0, presort=False, random\_state=1,
+            splitter='random')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{\texorpdfstring{ 4.4. XGBoost ( index
+)}{ 4.4. XGBoost    ( index )}}\label{xgboost-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{xgboost} \PY{k+kn}{import} \PY{n}{XGBClassifier}
+\PY{n}{xgb} \PY{o}{=} \PY{n}{XGBClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{xgb\PYZus{}parameters} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{booster}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gblinear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gbtree}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dart}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{learning\PYZus{}rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mf}{0.3}\PY{p}{,} \PY{l+m+mf}{0.6}\PY{p}{]}\PY{p}{,}
+                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{,}
+                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scale\PYZus{}pos\PYZus{}weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{2.76}\PY{p}{,} \PY{l+m+mf}{5.5}\PY{p}{,} \PY{l+m+mf}{6.0}\PY{p}{]}
+                 \PY{p}{\PYZcb{}}
+
+
+\PY{c+c1}{\PYZsh{} Store in Pickle file.  Uncomment below to rerun classifier with new parameters}
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs = GridSearchCV(xgb, xgb\PYZus{}parameters, scoring = f2scorer, cv = cv, n\PYZus{}jobs = \PYZhy{}1)}
+
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs.fit(X\PYZus{}train, y\PYZus{}train)}
+
+\PY{c+c1}{\PYZsh{}with open(\PYZsq{}grid\PYZus{}searchcv\PYZus{}xgb.pickle\PYZsq{},\PYZsq{}wb\PYZsq{}) as f:}
+\PY{c+c1}{\PYZsh{}         pickle.dump(clf\PYZus{}gs, f)}
+        
+\PY{n}{pickle\PYZus{}in} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid\PYZus{}searchcv\PYZus{}xgb.pickle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{clf\PYZus{}gs} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{pickle\PYZus{}in}\PY{p}{)}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}estimator\PYZus{}}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+XGBClassifier(base\_score=0.5, booster='gbtree', colsample\_bylevel=1,
+       colsample\_bytree=1, gamma=0, learning\_rate=0.3, max\_delta\_step=0,
+       max\_depth=1, min\_child\_weight=1, missing=nan, n\_estimators=100,
+       n\_jobs=1, nthread=None, objective='binary:logistic', random\_state=1,
+       reg\_alpha=0, reg\_lambda=1, scale\_pos\_weight=6.0, seed=None,
+       silent=True, subsample=1)
+\{'scale\_pos\_weight': 6.0, 'learning\_rate': 0.3, 'max\_depth': 1, 'booster':
+'gbtree'\}
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{xgb} \PY{o}{=} \PY{n}{XGBClassifier}\PY{p}{(}\PY{n}{booster}\PY{o}{=}\PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{booster}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{learning\PYZus{}rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{n}{max\PYZus{}depth} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{n}{scale\PYZus{}pos\PYZus{}weight}\PY{o}{=}\PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scale\PYZus{}pos\PYZus{}weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{xgb}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{28}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+XGBClassifier(base\_score=0.5, booster='gbtree', colsample\_bylevel=1,
+       colsample\_bytree=1, gamma=0, learning\_rate=0.3, max\_delta\_step=0,
+       max\_depth=1, min\_child\_weight=1, missing=None, n\_estimators=100,
+       n\_jobs=1, nthread=None, objective='binary:logistic', random\_state=1,
+       reg\_alpha=0, reg\_lambda=1, scale\_pos\_weight=6.0, seed=None,
+       silent=True, subsample=1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{\texorpdfstring{ 4.5. LightGBM ( index
+)}{ 4.5. LightGBM    ( index )}}\label{lightgbm-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{lightgbm} \PY{k+kn}{import} \PY{n}{LGBMClassifier}
+\PY{n}{lgbm} \PY{o}{=} \PY{n}{LGBMClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{is\PYZus{}unbalance} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{objective}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{lgbm\PYZus{}parameters} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{boosting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gbdt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{goss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dart}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{min\PYZus{}data\PYZus{}per\PYZus{}leaf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{500}\PY{p}{]}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{num\PYZus{}leaves}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{31}\PY{p}{,}\PY{l+m+mi}{80}\PY{p}{,}\PY{l+m+mi}{150}\PY{p}{]}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}unbalance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n+nb+bp}{True}\PY{p}{]}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{objective}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{random\PYZus{}state}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+                  \PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} Store in Pickle file.  Uncomment below to rerun classifier with new parameters}
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs = GridSearchCV(lgbm, lgbm\PYZus{}parameters, scoring = f2scorer, cv = cv, n\PYZus{}jobs = \PYZhy{}1)}
+
+\PY{c+c1}{\PYZsh{}clf\PYZus{}gs.fit(X\PYZus{}train, y\PYZus{}train)}
+
+\PY{c+c1}{\PYZsh{}with open(\PYZsq{}grid\PYZus{}searchcv\PYZus{}lgbm.pickle\PYZsq{},\PYZsq{}wb\PYZsq{}) as f:}
+\PY{c+c1}{\PYZsh{}         pickle.dump(clf\PYZus{}gs, f)}
+        
+\PY{n}{pickle\PYZus{}in} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid\PYZus{}searchcv\PYZus{}lgbm.pickle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{clf\PYZus{}gs} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{pickle\PYZus{}in}\PY{p}{)}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}estimator\PYZus{}}
+\PY{k}{print} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+LGBMClassifier(boosting='dart', boosting\_type='gbdt', class\_weight=None,
+        colsample\_bytree=1.0, importance\_type='split', is\_unbalance=True,
+        learning\_rate=0.1, max\_depth=3, min\_child\_samples=20,
+        min\_child\_weight=0.001, min\_data\_per\_leaf=5, min\_split\_gain=0.0,
+        n\_estimators=100, n\_jobs=-1, num\_leaves=5, objective='binary',
+        random\_state=1, reg\_alpha=0.0, reg\_lambda=0.0, silent=True,
+        subsample=1.0, subsample\_for\_bin=200000, subsample\_freq=0)
+\{'num\_leaves': 5, 'min\_data\_per\_leaf': 5, 'random\_state': 1, 'is\_unbalance':
+True, 'boosting': 'dart', 'objective': 'binary', 'max\_depth': 3\}
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{lgbm} \PY{o}{=} \PY{n}{LGBMClassifier}\PY{p}{(}\PY{n}{boosting} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{boosting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                      \PY{n}{num\PYZus{}leaves} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{num\PYZus{}leaves}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                      \PY{n}{max\PYZus{}depth} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                      \PY{n}{min\PYZus{}data\PYZus{}per\PYZus{}leaf} \PY{o}{=} \PY{n}{clf\PYZus{}gs}\PY{o}{.}\PY{n}{best\PYZus{}params\PYZus{}}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{min\PYZus{}data\PYZus{}per\PYZus{}leaf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                      \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} 
+                      \PY{n}{is\PYZus{}unbalance} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{,} 
+                      \PY{n}{objective}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}
+                     \PY{p}{)}
+
+\PY{n}{lgbm}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{31}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+LGBMClassifier(boosting='dart', boosting\_type='gbdt', class\_weight=None,
+        colsample\_bytree=1.0, importance\_type='split', is\_unbalance=True,
+        learning\_rate=0.1, max\_depth=3, min\_child\_samples=20,
+        min\_child\_weight=0.001, min\_data\_per\_leaf=5, min\_split\_gain=0.0,
+        n\_estimators=100, n\_jobs=-1, num\_leaves=5, objective='binary',
+        random\_state=1, reg\_alpha=0.0, reg\_lambda=0.0, silent=True,
+        subsample=1.0, subsample\_for\_bin=200000, subsample\_freq=0)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \section{\texorpdfstring{ 5. Model Evaluation and Performance Metrics
+}{ 5. Model Evaluation and Performance Metrics  }}\label{model-evaluation-and-performance-metrics}
+
+    \subsubsection{\texorpdfstring{ 5.1 Confusion Matrices for Models (
+index
+)}{ 5.1 Confusion Matrices for Models   ( index )}}\label{confusion-matrices-for-models-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}create confusion matrices}
+
+
+\PY{n}{models} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{svc}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Support Vector Machine}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{dt}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Decision Tree}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{xgb}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{XGBoost Classifier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lgbm}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LightGB Classifier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{GridSpec}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}SVC Confusion Matrix}
+\PY{n}{model} \PY{o}{=} \PY{n}{svc}
+
+\PY{n}{conf\PYZus{}matrix} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}convert to DF}
+\PY{n}{df\PYZus{}cf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{conf\PYZus{}matrix}\PY{p}{,}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                     \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df\PYZus{}cf}\PY{p}{,}\PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{fmt} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdYlGn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{rc}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{a}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{ Confusion Matrix}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Record metrics for the model}
+\PY{n}{f2} \PY{o}{=} \PY{n}{fbeta\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{accuracy} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{svc\PYZus{}metrics} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{f2}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{n}{recall}\PY{p}{]}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{precision}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{accuracy}\PY{p}{]}\PY{p}{\PYZcb{}}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{svc\PYZus{}metrics}\PY{p}{)}
+
+
+
+
+\PY{c+c1}{\PYZsh{}Decision Tree Confusion Matrix}
+\PY{n}{model} \PY{o}{=} \PY{n}{dt}
+
+\PY{n}{conf\PYZus{}matrix} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}convert to DF}
+\PY{n}{df\PYZus{}cf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{conf\PYZus{}matrix}\PY{p}{,}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                     \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df\PYZus{}cf}\PY{p}{,}\PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{fmt} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdYlGn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{rc}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{a}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{ Confusion Matrix}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Record metrics for the model}
+\PY{n}{f2} \PY{o}{=} \PY{n}{fbeta\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{accuracy} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{f2}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{n}{recall}\PY{p}{]}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{precision}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{accuracy}\PY{p}{]}\PY{p}{\PYZcb{}}
+\PY{n}{dt\PYZus{}metrics} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{all\PYZus{}metrics}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{dt\PYZus{}metrics}\PY{p}{)}
+
+
+          
+\PY{c+c1}{\PYZsh{}XGBoost Confusion Matrix}
+\PY{n}{model} \PY{o}{=} \PY{n}{xgb}
+\PY{n}{conf\PYZus{}matrix} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}convert to DF}
+\PY{n}{df\PYZus{}cf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{conf\PYZus{}matrix}\PY{p}{,}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                     \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df\PYZus{}cf}\PY{p}{,}\PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{fmt} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdYlGn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{rc}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{a}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{ Confusion Matrix}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Record metrics for the model}
+\PY{n}{f2} \PY{o}{=} \PY{n}{fbeta\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{accuracy} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{f2}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{n}{recall}\PY{p}{]}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{precision}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{accuracy}\PY{p}{]}\PY{p}{\PYZcb{}}
+\PY{n}{xgb\PYZus{}metrics} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{all\PYZus{}metrics}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{xgb\PYZus{}metrics}\PY{p}{)}
+
+
+
+\PY{c+c1}{\PYZsh{}LightBM Confusion Matrix}
+\PY{n}{model} \PY{o}{=} \PY{n}{lgbm}
+\PY{n}{conf\PYZus{}matrix} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{grid}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}convert to DF}
+\PY{n}{df\PYZus{}cf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{conf\PYZus{}matrix}\PY{p}{,}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                     \PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{No Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Churn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df\PYZus{}cf}\PY{p}{,}\PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{fmt} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdYlGn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{rc}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{a}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{ Confusion Matrix}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Record metrics for the model}
+\PY{n}{f2} \PY{o}{=} \PY{n}{fbeta\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{recall} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{accuracy} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{models}\PY{p}{[}\PY{n}{model}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{f2}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{n}{recall}\PY{p}{]}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{precision}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{[}\PY{n}{accuracy}\PY{p}{]}\PY{p}{\PYZcb{}}
+\PY{n}{lgbm\PYZus{}metrics} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{all\PYZus{}metrics}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{lgbm\PYZus{}metrics}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_48_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{\texorpdfstring{ 5.2 Compare Model Metrics ( index
+)}{ 5.2 Compare Model Metrics   ( index )}}\label{compare-model-metrics-index}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Prepare Metric Results to display}
+
+\PY{c+c1}{\PYZsh{}Add Naive Benchmark Metrics}
+\PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Naive Benchmark}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{naive\PYZus{}f2beta}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{naive\PYZus{}recall}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{naive\PYZus{}precision}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{naive\PYZus{}acc}\PY{p}{\PYZcb{}}
+\PY{n}{naive\PYZus{}metrics} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{all\PYZus{}metrics}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{naive\PYZus{}metrics}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Add Improved Benchmark Metrics}
+\PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Improved Naive Benchmark}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{naive\PYZus{}tenure\PYZus{}f2beta}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{naive\PYZus{}tenure\PYZus{}recall}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{naive\PYZus{}tenure\PYZus{}precision}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{acc}\PY{p}{\PYZcb{}}
+\PY{n}{imp\PYZus{}naive\PYZus{}metrics} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{all\PYZus{}metrics}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{imp\PYZus{}naive\PYZus{}metrics}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}order headers in DF}
+\PY{n}{all\PYZus{}metrics} \PY{o}{=} \PY{n}{all\PYZus{}metrics}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F2 Score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}Display Table of Metrics}
+\PY{k+kn}{from} \PY{n+nn}{IPython.display} \PY{k+kn}{import} \PY{n}{HTML} 
+\PY{n}{HTML}\PY{p}{(}\PY{n}{all\PYZus{}metrics}\PY{o}{.}\PY{n}{to\PYZus{}html}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+<IPython.core.display.HTML object>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}plot important features }
+\PY{k+kn}{from} \PY{n+nn}{xgboost} \PY{k+kn}{import} \PY{n}{plot\PYZus{}importance}
+
+\PY{n}{xgb} \PY{o}{=} \PY{n}{xgb}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\PY{n}{plot\PYZus{}importance}\PY{p}{(}\PY{n}{xgb}\PY{p}{,} \PY{n}{importance\PYZus{}type}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{34}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x7f29fafb5fd0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_51_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
